@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Login -- BankGuard{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 380px; margin: 40px auto;">
+    <h1>Sign in</h1>
+    <p class="muted">Enter your credentials and current authenticator OTP.</p>
+    <form method="post" action="/login">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required autocomplete="username">
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password">
+
+        <label for="otp">Authenticator OTP</label>
+        <input type="text" id="otp" name="otp" inputmode="numeric" pattern="[0-9]*" maxlength="6" required>
+
+        <button type="submit">Sign in</button>
+    </form>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    <p class="muted" style="margin-top:16px;">No account? <a href="/register">Register</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Register -- BankGuard{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 420px; margin: 40px auto;">
+    {% if registered %}
+        <h1>Enroll your authenticator app</h1>
+        <p class="muted">Scan this QR code with Google Authenticator, then sign in.</p>
+        <img class="qr" src="data:image/png;base64,{{ qr_code_b64 }}" alt="TOTP QR code">
+        <p class="muted">Manual entry key: <code>{{ secret }}</code></p>
+        <p><a href="/login">Continue to login &rarr;</a></p>
+    {% else %}
+        <h1>Create account</h1>
+        <form method="post" action="/register">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required autocomplete="username">
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required autocomplete="new-password">
+
+            <button type="submit">Register</button>
+        </form>
+        {% if error %}<p class="error">{{ error }}</p>{% endif %}
+        <p class="muted" style="margin-top:16px;">Already have an account? <a href="/login">Login</a></p>
+    {% endif %}
+</div>
+{% endblock %}

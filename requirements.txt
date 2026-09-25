@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+cryptography
+pyotp
+qrcode[pil]
+scikit-learn
+pandas
+numpy
+python-dotenv
+joblib

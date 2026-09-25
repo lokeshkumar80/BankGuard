@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+*.db
+fraud/creditcard.csv
+fraud/model/*.pkl
+.DS_Store
+venv/
+.venv/
+*.egg-info/

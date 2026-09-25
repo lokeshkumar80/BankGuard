@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Dashboard -- BankGuard{% endblock %}
+{% block content %}
+<h1>Security Dashboard</h1>
+
+<div class="card">
+    <h2>Submit a transaction</h2>
+    <form method="post" action="/transactions">
+        <label for="amount">Amount (INR)</label>
+        <input type="number" step="0.01" id="amount" name="amount" required>
+
+        <label for="merchant">Merchant</label>
+        <input type="text" id="merchant" name="merchant" required>
+
+        <label for="pan">Card / PAN number</label>
+        <input type="text" id="pan" name="pan" required>
+
+        <button type="submit">Score transaction</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Flagged transactions</h2>
+    {% if flagged_transactions %}
+    <table>
+        <thead>
+            <tr><th>ID</th><th>Card</th><th>Merchant</th><th>Amount</th><th>Time</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+            {% for tx in flagged_transactions %}
+            <tr>
+                <td>{{ tx.id }}</td>
+                <td>{{ tx.pan }}</td>
+                <td>{{ tx.merchant }}</td>
+                <td>&#8377;{{ "%.2f"|format(tx.amount) }}</td>
+                <td class="muted">{{ tx.timestamp }}</td>
+                <td><span class="badge danger">Fraud</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="muted">No flagged transactions yet.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>Audit log feed</h2>
+    {% if audit_entries %}
+    <table>
+        <thead>
+            <tr><th>Time</th><th>Event</th><th>Details</th></tr>
+        </thead>
+        <tbody>
+            {% for entry in audit_entries %}
+            <tr>
+                <td class="muted">{{ entry.timestamp }}</td>
+                <td>
+                    {% if entry.event in ["login_failed", "multiple_failed_logins", "off_hours_login", "login_blocked_lockout"] %}
+                    <span class="badge danger">{{ entry.event }}</span>
+                    {% else %}
+                    <span class="badge safe">{{ entry.event }}</span>
+                    {% endif %}
+                </td>
+                <td class="muted">{{ entry.data }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="muted">No audit events yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
